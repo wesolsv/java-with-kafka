@@ -41,4 +41,80 @@ public class CarPostEntity {
     @ManyToOne
     @JoinColumn(name = "owner_post_id", nullable = false, referencedColumnName = "id")
     private OwnerPostEntity ownerPost;
+
+    public long getId() {
+        return id;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getEngineVersion() {
+        return engineVersion;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public OwnerPostEntity getOwnerPost() {
+        return ownerPost;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setEngineVersion(String engineVersion) {
+        this.engineVersion = engineVersion;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public void setOwnerPost(OwnerPostEntity ownerPost) {
+        this.ownerPost = ownerPost;
+    }
 }

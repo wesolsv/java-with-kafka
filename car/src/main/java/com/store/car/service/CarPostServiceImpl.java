@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -22,7 +23,8 @@ public class CarPostServiceImpl implements CarPostService {
 
     @Override
     public void newPostDetails(CarPostDTO carPostDTO) {
-
+        CarPostEntity entity = mapCarDtoToEntity(carPostDTO);
+        carPostRepository.save(entity);
     }
 
     @Override
@@ -34,15 +36,38 @@ public class CarPostServiceImpl implements CarPostService {
     }
 
     private CarPostDTO mapCarEntityToDTO(CarPostEntity carPostEntity) {
-        return CarPostDTO.builder()
-                .brand(carPostEntity.getBrand())
-                .city(carPostEntity.getCity())
-                .model(carPostEntity.getModel())
-                .description(carPostEntity.getDescription())
-                .engineVersion(carPostEntity.getEngineVersion())
-                .createdDate(carPostEntity.getCreatedDate())
-                .ownerName(carPostEntity.getOwnerPost().getName())
-                .price(carPostEntity.getPrice()).build();
+        return new CarPostDTO(
+                carPostEntity.getModel(),
+                carPostEntity.getBrand(),
+                carPostEntity.getPrice(),
+                carPostEntity.getDescription(),
+                carPostEntity.getEngineVersion(),
+                carPostEntity.getCity(),
+                String.valueOf(carPostEntity.getCreatedDate()),
+                carPostEntity.getOwnerPost().getId(),
+                carPostEntity.getOwnerPost().getName()
+        );
+    }
+
+    private CarPostEntity mapCarDtoToEntity(CarPostDTO dto) {
+        CarPostEntity entity = new CarPostEntity();
+
+        ownerPostRepository.findById(dto.getOwnerId()).ifPresentOrElse(item ->{
+            entity.setOwnerPost(item);
+            entity.setContact(item.getContactNumber());
+        }, ()->{
+            throw new RuntimeException();
+        });
+
+        entity.setModel(dto.getModel());
+        entity.setBrand(dto.getBrand());
+        entity.setPrice(dto.getPrice());
+        entity.setCity(dto.getCity());
+        entity.setDescription(dto.getDescription());
+        entity.setEngineVersion(dto.getEngineVersion());
+        entity.setCreatedDate(String.valueOf(new Date()));
+
+        return entity;
     }
 
     @Override

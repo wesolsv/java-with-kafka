@@ -22,26 +22,28 @@ import java.util.Map;
 public class KafkaConsumerConfigs {
 
     @Value("${spring.kafka.bootstrap-servers}")
-    private String bootstrapServer;
+    private String bootstrapServers;
 
     @Bean
-    public ConsumerFactory<String, CarPostDTO> consumerFactory(){
-        Map<String, Object> configProps = new HashMap<>();
+    public ConsumerFactory<String, CarPostDTO> consumerFactory() {
 
-        configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
-        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, "store-posts-group");
-        configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
+        Map<String, Object> props = new HashMap<>();
 
-        return new DefaultKafkaConsumerFactory<>(configProps, new StringDeserializer(),
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "store-posts-group");
+        props.put(JsonDeserializer.TRUSTED_PACKAGES,"*");
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
                 new JsonDeserializer<>(CarPostDTO.class, false));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, CarPostDTO> userKafkaTemplate(){
-        ConcurrentKafkaListenerContainerFactory<String, CarPostDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, CarPostDTO> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, CarPostDTO>
+                factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
 }
+

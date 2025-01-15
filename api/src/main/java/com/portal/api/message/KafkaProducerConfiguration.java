@@ -23,7 +23,7 @@ public class KafkaProducerConfiguration {
     private String bootstrapServer;
 
     @Bean
-    public ProducerFactory<String, CarPostDTO> userProducerFactory(){
+    public ProducerFactory<String, CarPostDTO> producerFactory(){
         Map<String, Object> configProps = new HashMap<>();
 
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
@@ -36,6 +36,6 @@ public class KafkaProducerConfiguration {
 
     @Bean
     public KafkaTemplate<String, CarPostDTO> userKafkaTemplate(){
-        return new KafkaTemplate<>(userProducerFactory());
+        return new KafkaTemplate<>(producerFactory());
     }
 }

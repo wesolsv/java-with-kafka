@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class CarPostDTO {
 
     private String model;
@@ -40,6 +40,23 @@ public class CarPostDTO {
         this.createdDate = createdDate;
         this.ownerId = ownerId;
         this.ownerName = ownerName;
+    }
+
+    public CarPostDTO(String model, String brand, Double price, String description, String engineVersion, String city, String createdDate, Long ownerId, String ownerName, String ownerType, String contact) {
+        this.model = model;
+        this.brand = brand;
+        this.price = price;
+        this.description = description;
+        this.engineVersion = engineVersion;
+        this.city = city;
+        this.createdDate = createdDate;
+        this.ownerId = ownerId;
+        this.ownerName = ownerName;
+        this.ownerType = ownerType;
+        this.contact = contact;
+    }
+
+    public CarPostDTO() {
     }
 
     public String getModel() {

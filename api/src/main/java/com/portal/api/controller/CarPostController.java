@@ -4,6 +4,8 @@ import com.portal.api.dto.CarPostDTO;
 import com.portal.api.message.KafkaProducerMessage;
 import com.portal.api.service.CarPostStoreService;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/car")
-@Slf4j
 public class CarPostController {
 
     @Autowired
@@ -22,9 +23,11 @@ public class CarPostController {
     @Autowired
     private KafkaProducerMessage kafkaproducerMessage;
 
+    private final Logger LOG = LoggerFactory.getLogger(CarPostController.class);
+
     @PostMapping("/post")
     public ResponseEntity postCarForSale(@RequestBody CarPostDTO carPostDTO){
-        log.info("MAIN REST API -> Produces Car Post information: {}", carPostDTO);
+        LOG.info("MAIN REST API -> Produces Car Post information: {}", carPostDTO);
         kafkaproducerMessage.sendMessage(carPostDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
